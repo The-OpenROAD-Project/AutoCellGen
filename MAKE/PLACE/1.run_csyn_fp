@@ -1,0 +1,27 @@
+#!/bin/bash 
+mode=placement
+
+##########################################
+###### Change input parameters here ######
+##########################################
+input=../../DATA/input 
+
+#cdl
+######### asap7sc7p5t netlist ############
+#cdl=$input/asap7sc6t.sp
+########## asap7sc6t netlist #############
+#cdl=$input/asap7sc6t.sp
+cdl=$1
+
+#Placement configuration
+dr=$input/placement_file.style  
+#########################################
+
+out=./output/placement  
+mkdir -p $out 
+
+PlacementDir=./csyn_fp  
+
+$PlacementDir/$mode -i $cdl -d $dr -o $out 
+
+mv $out/summary.txt $out/../

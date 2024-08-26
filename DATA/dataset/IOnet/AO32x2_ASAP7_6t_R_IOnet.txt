@@ -1,0 +1,9 @@
+AO32x2_ASAP7_6t_R
+A1
+A2
+A3
+B1
+B2
+VDD
+VSS
+Y

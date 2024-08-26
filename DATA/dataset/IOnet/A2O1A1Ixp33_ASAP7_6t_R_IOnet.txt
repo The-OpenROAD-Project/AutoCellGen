@@ -1,0 +1,8 @@
+A2O1A1Ixp33_ASAP7_6t_R
+A1
+A2
+B
+C
+VDD
+VSS
+Y

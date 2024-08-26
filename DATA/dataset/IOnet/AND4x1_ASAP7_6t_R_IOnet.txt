@@ -1,0 +1,8 @@
+AND4x1_ASAP7_6t_R
+A
+B
+C
+D
+VDD
+VSS
+Y

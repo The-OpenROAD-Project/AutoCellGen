@@ -1,0 +1,11 @@
+#!/bin/bash 
+
+dataset=${PWD}/../../DATA/dataset
+mkdir -p $dataset 
+
+if [[ -d ./output/IOnet ]] ; then
+    cp -r ./output/IOnet $dataset 
+fi 
+if [[ -d ./output/placement ]] ; then
+    cp -r ./output/placement $dataset 
+fi 

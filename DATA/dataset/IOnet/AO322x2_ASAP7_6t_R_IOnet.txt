@@ -1,0 +1,11 @@
+AO322x2_ASAP7_6t_R
+A1
+A2
+A3
+B1
+B2
+C1
+C2
+VDD
+VSS
+Y

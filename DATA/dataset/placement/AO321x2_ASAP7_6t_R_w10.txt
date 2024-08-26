@@ -1,0 +1,18 @@
+-------- Solution 1 --------
+[Column 1]
+NMOS : MM16(2) [VSS net131 Y], PMOS : MM17(2) [VDD net131 Y]
+[Column 2]
+NMOS : MM16(2) [Y net131 VSS], PMOS : MM17(2) [Y net131 VDD]
+[Column 3]
+NMOS : MM4(1) [VSS A3 net138], PMOS : MM10(2) [VDD A3 net130]
+[Column 4]
+NMOS : MM3(1) [net138 A2 net137], PMOS : MM7(2) [net130 A2 VDD]
+[Column 5]
+NMOS : MM2(1) [net137 A1 net131], PMOS : MM6(2) [VDD A1 net130]
+[Column 6]
+NMOS : MM0(1) [net131 C VSS], PMOS : MM12(2) [net130 C net129]
+[Column 7]
+NMOS : MM5(1) [VSS B1 net136], PMOS : MM9(2) [net129 B1 net131]
+[Column 8]
+NMOS : MM11(1) [net136 B2 net131], PMOS : MM8(2) [net131 B2 net129]
+

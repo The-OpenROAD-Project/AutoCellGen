@@ -1,0 +1,18 @@
+-------- Solution 1 --------
+[Column 1]
+NMOS : MM9(2) [Y net118 VSS], PMOS : MM8(2) [Y net118 VDD]
+[Column 2]
+NMOS : MM7(2) [VSS A2 net125], PMOS : MM3(2) [VDD A2 net115]
+[Column 3]
+NMOS : MM6(2) [net125 A1 net118], PMOS : MM0(2) [net115 A1 VDD]
+[Column 4]
+NMOS : dummy(0) [dummy dummy dummy], PMOS : dummy(0) [dummy dummy dummy]
+[Column 5]
+NMOS : MM14(2) [VSS B2 net124], PMOS : MM4(2) [net114 B2 net115]
+[Column 6]
+NMOS : MM13(2) [net124 B1 net118], PMOS : MM1(2) [net115 B1 net114]
+[Column 7]
+NMOS : MM10(2) [net118 C1 net123], PMOS : MM2(2) [net114 C1 net118]
+[Column 8]
+NMOS : MM11(2) [net123 C2 VSS], PMOS : MM5(2) [net118 C2 net114]
+

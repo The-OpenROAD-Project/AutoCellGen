@@ -1,0 +1,3 @@
+/home/users/dtco/11.CELL/cell_ref/MAKE/02.PLACE/csyn_fp/CMakeFiles/placement.dir
+/home/users/dtco/11.CELL/cell_ref/MAKE/02.PLACE/csyn_fp/CMakeFiles/edit_cache.dir
+/home/users/dtco/11.CELL/cell_ref/MAKE/02.PLACE/csyn_fp/CMakeFiles/rebuild_cache.dir

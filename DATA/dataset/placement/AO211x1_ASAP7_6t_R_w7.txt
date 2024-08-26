@@ -1,0 +1,12 @@
+-------- Solution 1 --------
+[Column 1]
+NMOS : MM7(2) [Y net95 VSS], PMOS : MM8(2) [Y net95 VDD]
+[Column 2]
+NMOS : MM3(2) [VSS B net95], PMOS : MM5(2) [VDD B net99]
+[Column 3]
+NMOS : MM4(2) [net95 C VSS], PMOS : MM6(2) [net99 C net96]
+[Column 4]
+NMOS : MM2(2) [VSS A2 net100], PMOS : MM1(2) [net96 A2 net95]
+[Column 5]
+NMOS : MM24(2) [net100 A1 net95], PMOS : MM25(2) [net95 A1 net96]
+

@@ -1,0 +1,209 @@
+(0) Cell name : A2O1A1Ixp33_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 6
+Placement time : 40ms
+
+(1) Cell name : A2O1A1Ixp5_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 8
+Placement time : 4ms
+
+(2) Cell name : A2O1A1O1Ixp33_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 8
+Placement time : 53ms
+
+(3) Cell name : AND2x2_ASAP7_6t_R
+The number of transistors = 6
+Min #CPP = 6
+Placement time : 8ms
+
+(4) Cell name : AND2x4_ASAP7_6t_R
+The number of transistors = 6
+Min #CPP = 11
+Placement time : 12ms
+
+(5) Cell name : AND2x6_ASAP7_6t_R
+The number of transistors = 6
+Min #CPP = 13
+Placement time : 45ms
+
+(6) Cell name : AND3x1_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 6
+Placement time : 18ms
+
+(7) Cell name : AND3x2_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 7
+Placement time : 13ms
+
+(8) Cell name : AND3x4_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 13
+Placement time : 363ms
+
+(9) Cell name : AND4x1_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 7
+Placement time : 30ms
+
+(10) Cell name : AND4x2_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 8
+Placement time : 27ms
+
+(11) Cell name : AND5x1_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 8
+Placement time : 14ms
+#Groups = 2, 1 5 
+
+
+(12) Cell name : AND5x2_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 9
+Placement time : 15ms
+#Groups = 2, 1 5 
+
+
+(13) Cell name : AO211x1_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 7
+Placement time : 37ms
+
+(14) Cell name : AO211x2_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 8
+Placement time : 172ms
+
+(15) Cell name : AO21x1_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 6
+Placement time : 76ms
+
+(16) Cell name : AO21x2_ASAP7_6t_R
+The number of transistors = 8
+Min #CPP = 7
+Placement time : 3ms
+
+(17) Cell name : AO221x1_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 9
+Placement time : 79ms
+#Groups = 2, 1 5 
+
+
+(18) Cell name : AO221x2_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 10
+Placement time : 70ms
+#Groups = 2, 1 5 
+
+
+(19) Cell name : AO222x1_ASAP7_6t_R
+The number of transistors = 14
+Min #CPP = 10
+Placement time : 221ms
+#Groups = 2, 1 6 
+
+
+(20) Cell name : AO222x2_ASAP7_6t_R
+The number of transistors = 14
+Min #CPP = 11
+Placement time : 221ms
+#Groups = 2, 1 6 
+
+
+(21) Cell name : AO22x1_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 8
+Placement time : 47ms
+
+(22) Cell name : AO22x2_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 9
+Placement time : 40ms
+
+(23) Cell name : AO311x1_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 8
+Placement time : 179ms
+#Groups = 2, 1 5 
+
+
+(24) Cell name : AO311x2_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 9
+Placement time : 104ms
+#Groups = 2, 1 5 
+
+
+(25) Cell name : AO31x1_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 7
+Placement time : 101ms
+
+(26) Cell name : AO31x2_ASAP7_6t_R
+The number of transistors = 10
+Min #CPP = 8
+Placement time : 36ms
+
+(27) Cell name : AO321x1_ASAP7_6t_R
+The number of transistors = 14
+Min #CPP = 9
+Placement time : 102ms
+#Groups = 2, 1 6 
+
+
+(28) Cell name : AO321x2_ASAP7_6t_R
+The number of transistors = 14
+Min #CPP = 10
+Placement time : 122ms
+#Groups = 2, 1 6 
+
+
+(29) Cell name : AO322x1_ASAP7_6t_R
+The number of transistors = 16
+Min #CPP = 11
+Placement time : 730ms
+#Groups = 2, 1 7 
+
+
+(30) Cell name : AO322x2_ASAP7_6t_R
+The number of transistors = 16
+Min #CPP = 12
+Placement time : 646ms
+#Groups = 2, 1 7 
+
+
+(31) Cell name : AO32x1_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 8
+Placement time : 70ms
+#Groups = 2, 1 5 
+
+
+(32) Cell name : AO32x2_ASAP7_6t_R
+The number of transistors = 12
+Min #CPP = 9
+Placement time : 26ms
+#Groups = 2, 1 5 
+
+
+(33) Cell name : AO331x1_ASAP7_6t_R
+The number of transistors = 16
+Min #CPP = 10
+Placement time : 2133ms
+#Groups = 2, 1 7 
+
+
+(34) Cell name : AO331x2_ASAP7_6t_R
+The number of transistors = 16
+Min #CPP = 11
+Placement time : 2385ms
+#Groups = 2, 1 7 
+
+
+(35) Cell name : AO332x1_ASAP7_6t_R
+The number of transistors = 20

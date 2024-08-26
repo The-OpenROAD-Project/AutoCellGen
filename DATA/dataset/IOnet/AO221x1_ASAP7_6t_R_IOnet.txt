@@ -1,0 +1,9 @@
+AO221x1_ASAP7_6t_R
+A1
+A2
+B1
+B2
+C
+VDD
+VSS
+Y

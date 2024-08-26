@@ -1,0 +1,9 @@
+AO311x1_ASAP7_6t_R
+A1
+A2
+A3
+B
+C
+VDD
+VSS
+Y

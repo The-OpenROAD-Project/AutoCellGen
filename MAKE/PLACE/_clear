@@ -1,0 +1,18 @@
+#!/bin/bash 
+
+# clear directories 
+if [[ -d ./output ]] ; then
+    rm -rf ./output 
+fi 
+if [[ -d ./placements ]] ; then
+    rm -rf ./placements 
+fi 
+
+# clear log files 
+if [[ -f ./debug.txt ]] ; then
+    rm ./debug.txt 
+fi
+if [[ -f ./output.txt ]] ; then
+    rm ./output.txt 
+fi 
+
