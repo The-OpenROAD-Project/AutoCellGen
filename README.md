@@ -1,6 +1,6 @@
-# SNUcell
+# AutoCellGen
 
-SNUcell is a standard cell layout generator that encompasses netlist, transistor placement, routing, and GDS flow. As a standalone executable, it can be used to generate a standard cell library.
+AutoCellGen is a standard cell layout generator that encompasses netlist, transistor placement, routing, and GDS flow. As a standalone executable, it can be used to generate a standard cell library.
 
 
 
@@ -34,10 +34,13 @@ Use the following commands to checkout the git repository and build the Csyn-fp 
 
 ```
 git clone [TODO : create github repository]
-cd SNUcell
+cd AutoCellGen
 cd MAKE
 cd PLACE
 cd csyn_fp
+mkdir build
+cd build
+cmake ..
 make
 ```
 
@@ -53,10 +56,10 @@ If you make changes to `CMakeLists.txt` you may need to clean out existing CMake
 
 To generate placements, input parameter setups are required.
 
-input parameters can be modified in the file noted below.
+Input parameters can be modified in the file noted below.
 
 ```
-./SNUcell/DATA/input/placement_file.style  
+./AutoCellGen/DATA/input/placement_file.style  
 ```
 
 Each input parameter is explained by comments. Please modify the input parameters according to the comments.
@@ -68,7 +71,7 @@ Each input parameter is explained by comments. Please modify the input parameter
 Use the following commands to execute csyn-fp to  generate transistor placement.
 
 ```
-cd SNUcell
+cd AutoCellGen
 cd MAKE
 cd PLACE
 ./1.run_csyn_fp ${netlist_file}
@@ -79,11 +82,11 @@ cd PLACE
 
 An example of a netlist file is provided below. You can use this file as an input example.
 
-netlist files we provided are from https://github.com/The-OpenROAD-Project/asap7
+Netlist files we provided are from https://github.com/The-OpenROAD-Project/asap7
 
 ```
-ASAP7 6-track standard cell library netlist : ./SNUcell/DATA/input/asap7sc6t.sp
-ASAP7 7.5-track standard cell library netlist : ./SNUcell/DATA/input/asap7sc7p5t.sp
+ASAP7 6-track standard cell library netlist : ./AutoCellGen/DATA/input/asap7sc6t.sp
+ASAP7 7.5-track standard cell library netlist : ./AutoCellGen/DATA/input/asap7sc7p5t.sp
 ```
 
 
@@ -93,13 +96,13 @@ Output files are saved in the folder noted below.
 **placement file**
 
 ```
-./SNUcell/DATA/dataset/placement
+./AutoCellGen/MAKE/PLACE/output/placement
 ```
 
 **IO net file**
 
 ```
-./SNUcell/DATA/dataset/IOnet
+./AutoCellGen/MAKE/PLACE/output/IOnet
 ```
 
 

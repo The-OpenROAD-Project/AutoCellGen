@@ -9,6 +9,13 @@ message(STATUS ${PROJECT_SOURCE_DIR})
 # Find includes in the build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Set CC and CXX
+execute_process(COMMAND which gcc OUTPUT_VARIABLE CC OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND which g++ OUTPUT_VARIABLE CXX OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+set(CMAKE_C_COMPILER ${CC})
+set(CMAKE_CXX_COMPILER ${CXX})
+
 # Project's name
 project(transistorplacement)
 

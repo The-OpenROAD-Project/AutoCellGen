@@ -1,5 +1,5 @@
 #!/bin/bash 
-mode=placement
+mode=build/placement
 
 ##########################################
 ###### Change input parameters here ######
