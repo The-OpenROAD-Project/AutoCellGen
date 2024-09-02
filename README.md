@@ -138,7 +138,7 @@ NMOS : MMN0(2) [EN SE VSS], PMOS : MMP(2) [VDD SE net22]
 ## Authors
 
 - SNUCAD, Seoul National University
-- Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, Hyunbae Seo, Kyu-myung Choi, Taewhan Kim
+- Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, Hyunbae Seo, Kyu-myung Choi, and Taewhan Kim
 
 ## References
 

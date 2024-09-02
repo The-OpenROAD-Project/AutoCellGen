@@ -1,6 +1,7 @@
 // BSD 3-Clause License
 //
-// Copyright (c) 2024, The Regents of the University of California
+// Copyright (c) 2024, Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, 
+// Hyunbae Seo, Kyu-myung Choi, and Taewhan Kim
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
