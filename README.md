@@ -139,3 +139,12 @@ NMOS : MMN0(2) [EN SE VSS], PMOS : MMP(2) [VDD SE net22]
 
 - SNUCAD, Seoul National University
 - Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, Hyunbae Seo, Kyu-myung Choi, Taewhan Kim
+
+## References
+
+- K. Baek and T. Kim, "Simultaneous Transistor Folding and Placement in Standard Cell Layout Synthesis", [PDF](./DOC/Simultaneous_Transistor_Folding_and_Placement_in_Standard_Cell_Layout_Synthesis.pdf), IEEE/ACM International Conference on Computer Aided Design, 2021.
+
+## License
+
+BSD 3-Clause License. See LICENSE(./LICENSE) file.
+
