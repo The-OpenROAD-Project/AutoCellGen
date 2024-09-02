@@ -146,5 +146,5 @@ NMOS : MMN0(2) [EN SE VSS], PMOS : MMP(2) [VDD SE net22]
 
 ## License
 
-BSD 3-Clause License. See LICENSE(./LICENSE) file.
+BSD 3-Clause License. See [LICENSE](./LICENSE) file.
 
