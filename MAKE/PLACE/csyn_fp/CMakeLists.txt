@@ -1,36 +1,3 @@
-############################################################################
-## BSD 3-Clause License
-##
-## Copyright (c) 2024, Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, 
-## Hyunbae Seo, Kyu-myung Choi, and Taewhan Kim
-## All rights reserved.
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are met:
-##
-## 1. Redistributions of source code must retain the above copyright notice, this
-##    list of conditions and the following disclaimer.
-##
-## 2. Redistributions in binary form must reproduce the above copyright notice,
-##    this list of conditions and the following disclaimer in the documentation
-##    and/or other materials provided with the distribution.
-##
-## 3. Neither the name of the copyright holder nor the names of its
-##    contributors may be used to endorse or promote products derived from
-##    this software without specific prior written permission.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-## IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-## DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-## FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-## DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-## SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-## OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-############################################################################
-
 # Specify the minimum version for CMake
 cmake_minimum_required(VERSION 2.8)
 
@@ -51,6 +18,22 @@ set(CMAKE_CXX_COMPILER ${CXX})
 
 # Project's name
 project(transistorplacement)
+
+# Z3 SMT prover - Please modify it to suit your environment
+set ( Z3_DIR ./z3/build )
+find_package(Z3
+  REQUIRED
+  CONFIG
+  # `NO_DEFAULT_PATH` is set so that -DZ3_DIR has to be passed to find Z3.
+  # This should prevent us from accidentally picking up an installed
+  # copy of Z3. This is here to benefit Z3's build system when building
+  # this project. When making your own project you probably shouldn't
+  # use this option.
+  NO_DEFAULT_PATH
+)
+message(STATUS "Z3_FOUND: ${Z3_FOUND}")
+message(STATUS "Found Z3 ${Z3_VERSION_STRING}")
+message(STATUS "Z3_DIR: ${Z3_DIR}")
 
 # build configuration - Debug|Release|RelWithDebInfo|MinSizeRel
 set ( CMAKE_BUILD_TYPE Debug )
@@ -74,13 +57,19 @@ file(GLOB_RECURSE SRC_FILES_
 set(SRC_FILES ${SRC_FILES_})
 
 # Include Directories
-include_directories(headers ${PATH_SRC})
+include_directories(headers ${PATH_SRC} ${Z3_CXX_INCLUDE_DIRS})
 
 # Link library
+link_libraries ( ${Z3_LIBRARIES} )
+# link_libraries ( ${Z3_LIBRARIES} "-static")
 
 # Targets
 add_executable(placement ${SRC_FILES})
-#add_executable(debug ${SRC_FILES})
+
+# for static
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(placement PRIVATE Threads::Threads)
 
 
 # Linker Flags

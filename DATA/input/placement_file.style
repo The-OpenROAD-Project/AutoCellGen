@@ -29,10 +29,10 @@ MIN_OD_JOG 1 # MIN_OD_JOG is longer than 1; MIN_OD_JOG 2
 FOLDING_STYLE dynamic # static or dynamic
 
 # max fin number of nmos
-NMOS_MAX_FIN 2
+NMOS_MAX_FIN 3
 
 # max fin number of pmos
-PMOS_MAX_FIN 2
+PMOS_MAX_FIN 3
 
 # DO NOT FIX
 MAX_STEP 10
@@ -62,13 +62,33 @@ BRANCH_BOUND true
 # refinement
 REFINE_SOL false
 
+AVOID_GATECUT true
+
+
+#############################################
+################ route ######################
+#############################################
+
+M1_DIR BOTH
+M2_DIR HOR
+
+MIN_M2 true
+MIN_M1 true
+
+GEN_GDS true
+
+ROUTE_ACCEPT 12
+
 
 #############################################
 ############## solutions ####################
 #############################################
 
-# number of solutions generated
+# number of place solutions generated
 NUM_SOL 1000
+
+# number of route solutions generated
+ROUTE_SOL 5
 
 # relaxed cpp allowed
 RELAXATION 0
