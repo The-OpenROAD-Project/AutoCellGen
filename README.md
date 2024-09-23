@@ -18,6 +18,8 @@ Baek, Kyeonghyeon, and Taewhan Kim. "Simultaneous transistor folding and placeme
 
 Csyn-fp is built with CMake.
 
+
+
 ### Prerequisites
 
 The build dependency versions are shown below. Other versions may work, but these are the versions used for development.
@@ -28,9 +30,29 @@ cmake    3.27.7
 gcc      11.4.0
 ```
 
+
+
+### Z3 SMT solver
+
+We use Z3 SMT solver to execute in-cell route process.
+
+The github repository of Z3 SMT solver : https://github.com/Z3Prover/z3
+
+The version we used are shown below.
+
+```
+Z3		4.8.11.0
+```
+
+To achieve the correct results, **you must use the exact version as we provided**. Other versions may cause errors. 
+
+
+
 ### Installing with CMake
 
-Use the following commands to checkout the git repository and build the Csyn-fp library and excutable.
+Use the following commands to checkout the git repository and build the Csyn-fp library and executable.
+
+**git clone & move to default directory**
 
 ```
 git clone [TODO : create github repository]
@@ -38,6 +60,37 @@ cd AutoCellGen
 cd MAKE
 cd PLACE
 cd csyn_fp
+```
+
+
+
+**build Z3 solver library**
+
+We have included the Z3 solver library we used in the path below.
+
+```
+./AutoCellGen/MAKE/PLACE/csyn_fp/z3
+```
+
+You can directly generate the Z3 executable file using the command below.
+
+```
+cd z3
+mkdir build
+cmake ..
+make
+```
+
+It is also available for download & build from the Z3 solver GitHub repository mentioned above.
+
+If you download z3 from GitHub, you should place it in the `./AutoCellGen/MAKE/PLACE/csyn_fp` directory.
+
+
+
+**build Csyn-fp library**
+
+```
+cd ../..
 mkdir build
 cd build
 cmake ..
@@ -50,7 +103,7 @@ If you make changes to `CMakeLists.txt` you may need to clean out existing CMake
 
 
 
-## Generating transistor placement
+## Run
 
 ### Placement setups
 
@@ -66,26 +119,24 @@ Each input parameter is explained by comments. Please modify the input parameter
 
 
 
-### Generating transistor placement
+### Generating transistor placement & Execute in-cell route
 
-Use the following commands to execute csyn-fp to  generate transistor placement.
+Use the following commands to execute csyn-fp to  generate transistor placement & execute in-cell route
 
 ```
 cd AutoCellGen
 cd MAKE
 cd PLACE
 ./1.run_csyn_fp ${netlist_file}
-./:update_and_clear
 ```
 
 
 
 An example of a netlist file is provided below. You can use this file as an input example.
 
-Netlist files we provided are from https://github.com/The-OpenROAD-Project/asap7
+Netlist file we provided is from https://github.com/The-OpenROAD-Project/asap7
 
 ```
-ASAP7 6-track standard cell library netlist : ./AutoCellGen/DATA/input/asap7sc6t.sp
 ASAP7 7.5-track standard cell library netlist : ./AutoCellGen/DATA/input/asap7sc7p5t.sp
 ```
 
@@ -97,12 +148,6 @@ Output files are saved in the folder noted below.
 
 ```
 ./AutoCellGen/MAKE/PLACE/output/placement
-```
-
-**IO net file**
-
-```
-./AutoCellGen/MAKE/PLACE/output/IOnet
 ```
 
 
@@ -133,18 +178,28 @@ NMOS : MMN0(2) [EN SE VSS], PMOS : MMP(2) [VDD SE net22]
 
 
 
+**IO net file**
+
+```
+./AutoCellGen/MAKE/PLACE/output/IOnet
+```
+
+
+
+**GDS file**
+
+```
+./AutoCellGen/MAKE/PLACE/output/gds
+```
+
+Note that SNUCell1.0 may produce some cells with design rule violation. In such case, a manual modification is required.
+A next version will fix this problem.
+
+
+
 
 
 ## Authors
 
 - SNUCAD, Seoul National University
-- Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, Hyunbae Seo, Kyu-myung Choi, and Taewhan Kim
-
-## References
-
-- K. Baek and T. Kim, "Simultaneous Transistor Folding and Placement in Standard Cell Layout Synthesis", [PDF](./DOC/Simultaneous_Transistor_Folding_and_Placement_in_Standard_Cell_Layout_Synthesis.pdf), IEEE/ACM International Conference on Computer Aided Design, 2021.
-
-## License
-
-BSD 3-Clause License. See [LICENSE](./LICENSE) file.
-
+- Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, Hyunbae Seo, Kyu-myung Choi, Taewhan Kim

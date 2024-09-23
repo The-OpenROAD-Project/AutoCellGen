@@ -1,41 +1,9 @@
-////////////////////////////////////////////////////////////////////////////
-// BSD 3-Clause License
-//
-// Copyright (c) 2024, Kyeonghyeon Baek, Sehyeon Chung, Handong Cho, 
-// Hyunbae Seo, Kyu-myung Choi, and Taewhan Kim
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice, this
-//    list of conditions and the following disclaimer.
-//
-// 2. Redistributions in binary form must reproduce the above copyright notice,
-//    this list of conditions and the following disclaimer in the documentation
-//    and/or other materials provided with the distribution.
-//
-// 3. Neither the name of the copyright holder nor the names of its
-//    contributors may be used to endorse or promote products derived from
-//    this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-////////////////////////////////////////////////////////////////////////////
-
 #include "../header/global.h"
 #include "../header/cdlParser.h"
 #include "../header/Placer.h"
 #include "../header/GroupPlacer.h"
 #include "../header/Pairing.h"
+#include "../header/Router.h"
 #include "../header/ArgumentParser.h"
 #include <chrono>
 #include <queue>
@@ -78,6 +46,7 @@ void parsing_DR(fs::path& dr_path) {
         else if (tokens[0] == "MIN_TR_NUM") setting.MinTrNum = std::stoi(tokens[1]);
         else if (tokens[0] == "MAX_INTRA_NUM") setting.MaxIntraNetNum = std::stoi(tokens[1]);
         else if (tokens[0] == "NUM_SOL") setting.numSolutions = std::stoi(tokens[1]);
+        else if (tokens[0] == "ROUTE_SOL") setting.routeSolutions = std::stoi(tokens[1]);
         else if (tokens[0] == "XC_NUM") setting.XC = std::stoi(tokens[1]);
         else if (tokens[0] == "RELAXATION") setting.relaxation = std::stoi(tokens[1]);
 		else if (tokens[0] == "MERGE_GROUP"){
@@ -133,6 +102,7 @@ void parsing_DR(fs::path& dr_path) {
             std::cout << "Error! Unidentified design rule: " << tokens[0] << std::endl;
         }
     }
+    std::cout << setting.m1_dir << std::endl;
 }
 
 void make_IOnet(std::string outpath, Cell& cell){
@@ -154,7 +124,7 @@ void make_IOnet(std::string outpath, Cell& cell){
 int main(int argc, char **argv) {
 
     ArgumentParser agparser(argc, argv);
-    fs::path input_path, output_path, dr_path;
+    fs::path input_path, output_path, dr_path, route_path, gds_path;
 
     // Find DR
     const std::string &dr_name = agparser.getCmdOption("-d");
@@ -186,8 +156,13 @@ int main(int argc, char **argv) {
 	std::cout << output_path << std::endl;
 	if (!fs::exists(output_path)) fs::create_directories(output_path);
 
-	//auto gds_path = output_path / fs::path("/../Best_GDS");
-    //fs::create_directories(gds_path);
+    route_path = output_path / fs::path("../route");
+    std::cout << route_path << std::endl;
+	fs::create_directories(route_path);
+
+	gds_path = output_path / fs::path("../gds");
+    std::cout << gds_path << std::endl;
+    fs::create_directories(gds_path);
 
     int ncell = l.cells.size();
 
@@ -221,6 +196,8 @@ int main(int argc, char **argv) {
         //if (i >= 85 && i <= 87) continue; // skip ICG cells
 
         fs::path cell_output_path = output_path / fs::path(temp.name);
+        fs::path cell_route_path = output_path / fs::path("../route");
+        fs::path cell_gds_path = output_path / fs::path("../gds");
         //fs::create_directories(cell_output_path);
 		//
         if (temp.trans.size() > 10) {
@@ -264,6 +241,69 @@ int main(int argc, char **argv) {
             }
             */
 
+            // Routing
+            for (int width = placer.min_width; width <= placer.min_width + setting.relaxation; width++) {
+                //if (width - placer.min_width < 2) continue;
+                if (placer.solutions.find(width) != placer.solutions.end()) {
+                    auto& w_solutions = placer.solutions[width];
+                    int num_sol = w_solutions.size();
+
+                    bool is_routable = false;
+                    bool is_m1_routable = false;
+                    double min_m2_usage = 100000;
+                    int64_t runtime = -1;
+
+                    fs::path curw_best_gds_path;
+                    
+                    for (int k = 0; k < setting.routeSolutions; k++) {
+                        //if (k >= setting.numSolutions) break;
+						if (k >= num_sol) break;
+                        std::cout << "Routing for solution " << k << " of width " << width + 2 << std::endl;
+
+                        std::string output_file_name = temp.name + "_w" + std::to_string(width + 2) + "_" + std::to_string(k) + ".txt";
+                        fs::path output_file_path = cell_route_path / fs::path(output_file_name);
+
+                        Router router(l.cells[i], w_solutions[k]);
+                        router.routing(output_file_path);
+
+                        if (router.is_routable == false) {
+                            out << "Width " << width + 2 << ", Solution " << k << " (Cost = " << w_solutions[k].cost  << "): Unroutable, Routing time: " << router.runtime << "ms" << std::endl;
+                            out << "[NOR_HPWL=" << w_solutions[k].nor_hpwl << ", MAX_H_GRID=" << w_solutions[k].max_h_grid << ", MAX_V_GRID=" << w_solutions[k].max_v_grid << ", MAX_H_COLUMN=" << w_solutions[k].max_h_column << ", MAX_V_COLUMN=" << w_solutions[k].max_v_column << ", MAX_H_ROW=" << w_solutions[k].max_h_row << ", MAX_V_ROW=" << w_solutions[k].max_v_row << std::endl << std::endl;
+                            //continue;
+                        } 
+                        else if (router.is_routable == true && router.m2_usage == 0) {
+                            is_m1_routable = true;
+                            is_routable = true;
+                            min_m2_usage = 0;
+                            curw_best_gds_path = output_file_path.replace_extension(fs::path(".gds"));
+                            runtime = router.runtime;
+                            out << "Width " << width + 2 << ", Solution " << k << " (Cost = " << w_solutions[k].cost  << "): M1 routable, Routing time: " << router.runtime << "ms" << std::endl;
+                            out << "[NOR_HPWL=" << w_solutions[k].nor_hpwl << ", MAX_H_GRID=" << w_solutions[k].max_h_grid << ", MAX_V_GRID=" << w_solutions[k].max_v_grid << ", MAX_H_COLUMN=" << w_solutions[k].max_h_column << ", MAX_V_COLUMN=" << w_solutions[k].max_v_column << ", MAX_H_ROW=" << w_solutions[k].max_h_row << ", MAX_V_ROW=" << w_solutions[k].max_v_row << std::endl << std::endl;
+                            break;
+                        }
+                        else {
+                            is_routable = true;
+                            if (router.m2_usage < min_m2_usage) {
+                                min_m2_usage = router.m2_usage;
+                                runtime = router.runtime;
+                                curw_best_gds_path = output_file_path.replace_extension(fs::path(".gds"));
+                            }
+                            out << "Width " << width + 2 << ", Solution " << k << " (Cost = " << w_solutions[k].cost  << "): M2 routable (Usage " << router.m2_usage << "), Routing time: " << router.runtime << "ms" << std::endl;
+                            out << "[NOR_HPWL=" << w_solutions[k].nor_hpwl << ", MAX_H_GRID=" << w_solutions[k].max_h_grid << ", MAX_V_GRID=" << w_solutions[k].max_v_grid << ", MAX_H_COLUMN=" << w_solutions[k].max_h_column << ", MAX_V_COLUMN=" << w_solutions[k].max_v_column << ", MAX_H_ROW=" << w_solutions[k].max_h_row << ", MAX_V_ROW=" << w_solutions[k].max_v_row << std::endl << std::endl;
+
+                        }
+                    }
+
+
+                    if (is_routable) {
+                        std::string cp_gds = "cp " + curw_best_gds_path.string() + " " + gds_path.string();
+                        system(cp_gds.c_str());
+                    }
+
+                    if (is_m1_routable) break;
+                }
+
+            }
        }
 
        else { 
@@ -296,7 +336,73 @@ int main(int argc, char **argv) {
                         w_solutions[k].print_place(temp, output_file_path.string(), k);                      
                     }
                 }
-            }*/   
+            }*/
+           
+            // Routing
+            for (int width = placer.min_width; width <= placer.min_width + setting.relaxation; width++) {
+                //if (width != placer.min_width + setting.relaxation) continue;
+                if (placer.solutions.find(width) != placer.solutions.end()) {
+                    auto& w_solutions = placer.solutions[width];
+                    int num_sol = w_solutions.size();
+
+                    bool is_routable = false;
+                    bool is_m1_routable = false;
+                    double min_m2_usage = 100000;
+                    int64_t runtime = -1;
+
+                    fs::path curw_best_gds_path;
+
+
+                    for (int k = 0; k < setting.routeSolutions; k++) {
+						std::cout << num_sol << std::endl;
+						if (k >= num_sol) break;
+                        //if (k >= setting.numSolutions) break;
+
+                        std::cout << "Routing for solution " << k << " of width " << width + 2 << std::endl;
+
+                        std::string output_file_name = temp.name + "_w" + std::to_string(width + 2) + "_" + std::to_string(k) + ".txt";
+                        fs::path output_file_path = cell_route_path / fs::path(output_file_name);
+
+                        Router router(l.cells[i], w_solutions[k]);
+                        router.routing(output_file_path);
+                        std::cout << router.is_routable << std::endl;
+
+                        if (router.is_routable == false) {
+                            out << "Width " << width + 2 << ", Solution " << k << " (Cost = " << w_solutions[k].cost  << "): Unroutable, Routing time: " << router.runtime << "ms" << std::endl;
+                            out << "[NOR_HPWL=" << w_solutions[k].nor_hpwl << ", MAX_H_GRID=" << w_solutions[k].max_h_grid << ", MAX_V_GRID=" << w_solutions[k].max_v_grid << ", MAX_H_COLUMN=" << w_solutions[k].max_h_column << ", MAX_V_COLUMN=" << w_solutions[k].max_v_column << ", MAX_H_ROW=" << w_solutions[k].max_h_row << ", MAX_V_ROW=" << w_solutions[k].max_v_row << std::endl << std::endl;
+                            //continue;
+                        } 
+                        else if (router.is_routable == true && router.m2_usage == 0) {
+                            is_m1_routable = true;
+                            is_routable = true;
+
+                            min_m2_usage = 0;
+                            curw_best_gds_path = output_file_path.replace_extension(fs::path(".gds"));
+                            runtime = router.runtime;
+                            out << "Width " << width + 2 << ", Solution " << k << " (Cost = " << w_solutions[k].cost  << "): M1 routable, Routing time: " << router.runtime << "ms" << std::endl;
+                            out << "[NOR_HPWL=" << w_solutions[k].nor_hpwl << ", MAX_H_GRID=" << w_solutions[k].max_h_grid << ", MAX_V_GRID=" << w_solutions[k].max_v_grid << ", MAX_H_COLUMN=" << w_solutions[k].max_h_column << ", MAX_V_COLUMN=" << w_solutions[k].max_v_column << ", MAX_H_ROW=" << w_solutions[k].max_h_row << ", MAX_V_ROW=" << w_solutions[k].max_v_row << std::endl << std::endl;
+                            break;
+                        }
+                        else {
+                            is_routable = true;
+                            if (router.m2_usage < min_m2_usage) {
+                                min_m2_usage = router.m2_usage;
+                                runtime = router.runtime;
+                                curw_best_gds_path = output_file_path.replace_extension(fs::path(".gds"));
+                            }
+                            out << "Width " << width + 2 << ", Solution " << k << " (Cost = " << w_solutions[k].cost  << "): M2 routable (Usage " << router.m2_usage << "), Routing time: " << router.runtime << "ms" << std::endl;
+                            out << "[NOR_HPWL=" << w_solutions[k].nor_hpwl << ", MAX_H_GRID=" << w_solutions[k].max_h_grid << ", MAX_V_GRID=" << w_solutions[k].max_v_grid << ", MAX_H_COLUMN=" << w_solutions[k].max_h_column << ", MAX_V_COLUMN=" << w_solutions[k].max_v_column << ", MAX_H_ROW=" << w_solutions[k].max_h_row << ", MAX_V_ROW=" << w_solutions[k].max_v_row << std::endl << std::endl;
+
+                        }
+                    }
+                    if (is_routable) {
+                        std::string cp_gds = "cp " + curw_best_gds_path.string() + " " + gds_path.string();
+                        system(cp_gds.c_str());
+                    }
+
+                    if (is_m1_routable) break;
+                }
+            }
        }
        out << std::endl;
     }
